@@ -3,7 +3,7 @@ A [Giter8](http://www.foundweekends.org/giter8/) template for [Automorph](https:
 ## Use
 
 ```
-sbt new martin-ockajak/automorph.g8
+sbt new automorph-org/automorph.g8
 cd automorph-example
 sbt run
 ```
