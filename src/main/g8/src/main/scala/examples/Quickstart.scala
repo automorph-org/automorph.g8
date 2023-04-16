@@ -11,7 +11,7 @@ private[examples] object Quickstart {
   @scala.annotation.nowarn
   def main(arguments: Array[String]): Unit = {
 
-    // Define a helper function to evaluate Futures
+    // Helper function to evaluate Futures
     def run[T](effect: Future[T]): T = Await.result(effect, Duration.Inf)
 
     // Create server API instance
@@ -21,7 +21,7 @@ private[examples] object Quickstart {
     }
     val api = new ServerApi
 
-    // Start JSON-RPC HTTP server listening on port 7000 for requests to '/api'
+    // Initialize JSON-RPC HTTP & WebSocket server listening on port 7000 for requests to '/api'
     val server = run(
       Default.serverAsync(7000, "/api").bind(api).init()
     )
@@ -31,7 +31,7 @@ private[examples] object Quickstart {
       def hello(some: String, n: Int): Future[String]
     }
 
-    // Setup JSON-RPC HTTP & WebSocket client sending POST requests to 'http://localhost:7000/api'
+    // Initialize JSON-RPC HTTP & WebSocket client sending POST requests to 'http://localhost:7000/api'
     val client = run(
       Default.clientAsync(new URI("http://localhost:7000/api")).init()
     )
