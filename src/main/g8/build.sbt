@@ -1,7 +1,7 @@
 scalaVersion := "3.2.2"
 name := "automorph"
 organization := "example"
-version := "0.0.1"
+version := "0.0.0"
 
 lazy val root = (project in file(".")).settings(
   name := "$name$",
