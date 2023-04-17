@@ -10,16 +10,22 @@
 
   <!-- Simple console logging -->
   <appender name="Console" class="ch.qos.logback.core.ConsoleAppender">
+    <filter class="ch.qos.logback.classic.filter.ThresholdFilter">
+      <level>\${LOG_LEVEL:-OFF}</level>
+    </filter>
     <encoder>
-      <pattern>%date{HH:mm:ss.SSS} \(%level\) %message%n</pattern>
+      <pattern>%cyan(%date{HH:mm:ss.SSS}) [%highlight(%-5level)] %message - %gray(%mdc) %n</pattern>
     </encoder>
   </appender>
 
   <appender name="FileSync" class="ch.qos.logback.core.FileAppender">
+    <filter class="ch.qos.logback.classic.filter.ThresholdFilter">
+      <level>DEBUG</level>
+    </filter>
     <file>target/test.log</file>
     <append>false</append>
     <encoder>
-      <pattern>%date \(%level\) [%logger{16}] %message: %mdc%n</pattern>
+      <pattern>%date [%-5level] %message - %mdc%n</pattern>
     </encoder>
   </appender>
 
@@ -29,7 +35,7 @@
     <discardingThreshold>0</discardingThreshold>
   </appender>
 
-  <root level="\${LOG_LEVEL:-OFF}">
+  <root level="TRACE">
     <appender-ref ref="Console" />
     <appender-ref ref="File" />
   </root>
