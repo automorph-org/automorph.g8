@@ -23,7 +23,7 @@ private[examples] object Quickstart {
 
     // Initialize JSON-RPC HTTP & WebSocket server listening on port 7000 for requests to '/api'
     val server = run(
-      Default.serverAsync(7000, "/api").bind(api).init()
+      Default.rpcServerAsync(7000, "/api").bind(api).init()
     )
 
     // Define client view of the remote API
@@ -33,7 +33,7 @@ private[examples] object Quickstart {
 
     // Initialize JSON-RPC HTTP client sending POST requests to 'http://localhost:7000/api'
     val client = run(
-      Default.clientAsync(new URI("http://localhost:7000/api")).init()
+      Default.rpcClientAsync(new URI("http://localhost:7000/api")).init()
     )
 
     // Call the remote API function statically
@@ -54,3 +54,4 @@ private[examples] object Quickstart {
     run(server.close())
   }
 }
+
