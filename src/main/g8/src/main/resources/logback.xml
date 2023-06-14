@@ -7,9 +7,6 @@
 
   <!-- Simple console logging -->
   <appender name="Console" class="ch.qos.logback.core.ConsoleAppender">
-    <filter class="ch.qos.logback.classic.filter.ThresholdFilter">
-      <level>\${LOG_LEVEL:-OFF}</level>
-    </filter>
     <encoder>
       <pattern>%cyan(%date{HH:mm:ss.SSS}) [%highlight(%-5level)] %message - %gray(%mdc) %n</pattern>
     </encoder>
@@ -17,9 +14,6 @@
 
   <!-- Synchronous file logging -->
   <appender name="FileSync" class="ch.qos.logback.core.FileAppender">
-    <filter class="ch.qos.logback.classic.filter.ThresholdFilter">
-      <level>DEBUG</level>
-    </filter>
     <file>target/main.log</file>
     <append>false</append>
     <encoder>
