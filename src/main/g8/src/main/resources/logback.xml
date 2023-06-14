@@ -35,12 +35,12 @@
   </appender>
 
   <!-- Root log level -->
-  <root level="${LOG_LEVEL:-OFF}">
+  <root level="\${LOG_LEVEL:-OFF}">
     <appender-ref ref="Console" />
     <appender-ref ref="File" />
   </root>
 
   <!-- Package-specific log level -->
-  <logger name="automorph" level="${LOG_LEVEL:-INFO}"/>
+  <logger name="automorph" level="\${LOG_LEVEL:-INFO}"/>
 </configuration>
 
