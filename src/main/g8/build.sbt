@@ -1,6 +1,6 @@
 scalaVersion := "3.3.0"
 organization := "example"
-name := "$name$"
+name := "Automorph Example"
 
 libraryDependencies ++= Seq(
   "org.automorph" %% "automorph-default" % "0.1.0",
