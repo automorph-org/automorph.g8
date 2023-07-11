@@ -10,5 +10,5 @@
 
 ## Customize
 
-`edit src/main/scala/examples/Quickstart.scala`
+Edit `src/main/scala/examples/Quickstart.scala`
 
