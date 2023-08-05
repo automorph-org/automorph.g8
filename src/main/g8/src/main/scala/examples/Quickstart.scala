@@ -21,18 +21,14 @@ private[examples] object Quickstart {
 
     // Create server implementation of the remote API
     val api = new Api {
-      override def hello(some: String, n: Int): Future[String] = Future(s"Hello $some $n!")
+      def hello(some: String, n: Int): Future[String] =
+        Future(s"Hello $some $n!")
     }
 
     // Initialize JSON-RPC HTTP & WebSocket server listening on port 9000 for requests to '/api'
     val server = run(
       Default.rpcServerAsync(9000, "/api").bind(api).init()
     )
-
-    // Define client view of the remote API
-    trait Api {
-      def hello(some: String, n: Int): Future[String]
-    }
 
     // Initialize JSON-RPC HTTP client for sending POST requests to 'http://localhost:9000/api'
     val client = run(
