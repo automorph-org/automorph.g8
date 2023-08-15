@@ -11,9 +11,6 @@ private[examples] object Quickstart {
   @scala.annotation.nowarn
   def main(arguments: Array[String]): Unit = {
 
-    // Helper function to evaluate Futures
-    def run[T](effect: Future[T]): T = Await.result(effect, Duration.Inf)
-
     // Define a remote API
     trait Api {
       def hello(some: String, n: Int): Future[String]
@@ -25,32 +22,28 @@ private[examples] object Quickstart {
         Future(s"Hello $some $n!")
     }
 
-    // Initialize JSON-RPC HTTP & WebSocket server listening on port 9000 for requests to '/api'
-    val server = run(
-      Default.rpcServerAsync(9000, "/api").bind(api).init()
-    )
+    Await.ready(for {
+      // Initialize JSON-RPC HTTP & WebSocket server listening on port 9000 for requests to '/api'
+      server <- Default.rpcServer(9000, "/api").bind(api).init()
 
-    // Initialize JSON-RPC HTTP client for sending POST requests to 'http://localhost:9000/api'
-    val client = run(
-      Default.rpcClientAsync(new URI("http://localhost:9000/api")).init()
-    )
+      // Initialize JSON-RPC HTTP client for sending POST requests to 'http://localhost:9000/api'
+      client <- Default.rpcClient(new URI("http://localhost:9000/api")).init()
+      remoteApi = client.bind[Api]
 
-    // Call the remote API function statically
-    val remoteApi = client.bind[Api]
-    println(run(
-      remoteApi.hello("world", 1)
-    ))
+      // Call the remote API function statically
+      result <- remoteApi.hello("world", 1)
+      _ = println(result)
 
-    // Call the remote API function dynamically
-    println(run(
-      client.call[String]("hello")("some" -> "world", "n" -> 1)
-    ))
+      // Call the remote API function dynamically
+      result <- client.call[String]("hello")("some" -> "world", "n" -> 1)
+      _ = println(result)
 
-    // Close the RPC client
-    run(client.close())
+      // Close the RPC client
+      _ <- client.close()
 
-    // Stop the RPC server
-    run(server.close())
+      // Close the RPC server
+      _ <- server.close()
+    } yield (), Duration.Inf)
   }
 }
 
