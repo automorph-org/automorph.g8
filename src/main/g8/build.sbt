@@ -3,7 +3,7 @@ organization := "example"
 name := "$name$"
 
 libraryDependencies ++= Seq(
-  "org.automorph" %% "automorph-default" % "0.2.0",
-  "ch.qos.logback" % "logback-classic" % "1.4.9",
+  "org.automorph" %% "automorph-default" % "0.2.1",
+  "ch.qos.logback" % "logback-classic" % "1.4.11",
 )
 
