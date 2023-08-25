@@ -19,7 +19,7 @@ private[examples] object Quickstart {
     // Create server implementation of the remote API
     class ApiImpl {
       def hello(some: String, n: Int): Future[String] =
-        Future(s"Hello $some $n!")
+        Future(s"Hello \$some \$n!")
     }
     val api = new ApiImpl
 
