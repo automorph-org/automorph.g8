@@ -1,4 +1,6 @@
 target
+dist
+.scala-build
 .bsp
 .idea
 .vscode
