@@ -46,7 +46,7 @@ private[examples] object Quickstart {
       result <- remoteApi.hello("world", 1)
       _ = println(result)
 
-      // Call the remote API function without API specification
+      // Call the remote API function without API trait
       result <- activeClient.call[String]("hello")("some" -> "world", "n" -> 1)
       _ = println(result)
 
