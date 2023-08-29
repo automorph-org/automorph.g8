@@ -32,7 +32,7 @@ private[examples] object Quickstart {
     // Configure JSON-RPC HTTP client to send POST requests to 'http://localhost:9000/api'
     val client = Default.rpcClient(new URI("http://localhost:9000/api"))
 
-    // Create a type-safe proxy for the remote API from its API trait
+    // Create a type-safe proxy for the remote API from the API trait
     val remoteApi = client.bind[Api]
 
     Await.ready(for {
