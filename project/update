@@ -1,0 +1,11 @@
+#!/usr/bin/env bash
+# Update the template to the latest release
+set -eo pipefail
+
+VERSION=$(git ls-remote --tags --sort='-v:refname' ssh://git@ssh.github.com/automorph-org/automorph | cut -f 2 | head -n 1 | sed 's/^.*\/v//' | sed 's/\^.*$//')
+
+sed -i "s/:automorph-default:.*$/:automorph-default:${VERSION}/" src/main/g8/src/main/scala/examples/Quickstart.scala
+sed -i "s/\"automorph-default\" % \"0.2.4\"/\"automorph-default\" % \"${VERSION}\"/" src/main/g8/build.sbt
+#git commit -m '.' .
+#git push
+
