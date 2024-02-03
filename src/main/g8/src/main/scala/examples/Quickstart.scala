@@ -59,6 +59,7 @@ private[examples] object Quickstart {
       // Stop the JSON-RPC server
       _ <- activeServer.close()
     } yield (), Duration.Inf)
+    ()
   }
 }
 
