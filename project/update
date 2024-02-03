@@ -6,6 +6,7 @@ VERSION=$(git ls-remote --tags --sort='-v:refname' ssh://git@ssh.github.com/auto
 
 sed -i "s/:automorph-default:.*$/:automorph-default:${VERSION}/" src/main/g8/src/main/scala/examples/Quickstart.scala
 sed -i "s/\"automorph-default\" % \"0.2.4\"/\"automorph-default\" % \"${VERSION}\"/" src/main/g8/build.sbt
-#git commit -m '.' .
-#git push
+
+git commit -m '.' .
+git push
 
