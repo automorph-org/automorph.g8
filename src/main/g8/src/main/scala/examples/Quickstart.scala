@@ -21,17 +21,17 @@ private[examples] object Quickstart {
     }
 
     // Create server implementation of the remote API
-    class ApiImpl {
+    class Service {
       def hello(n: Int): Future[String] =
-        Future(s"Hello world \$n")
+        Future(s"Hello world $n")
     }
-    val api = new ApiImpl
+    val service = new Service
 
     // Configure JSON-RPC HTTP & WebSocket server to listen on port 9000 for requests to '/api'
     val server = Default.rpcServer(9000, "/api")
 
     // Expose the server API implementation to be called remotely
-    val apiServer = server.bind(api)
+    val apiServer = server.bind(service)
 
     // Configure JSON-RPC HTTP client to send POST requests to 'http://localhost:9000/api'
     val client = Default.rpcClient(new URI("http://localhost:9000/api"))
@@ -39,27 +39,29 @@ private[examples] object Quickstart {
     // Create a type-safe local proxy for the remote API from the API trait
     val remoteApi = client.bind[Api]
 
-    Await.ready(for {
-      // Start the JSON-RPC server
-      activeServer <- apiServer.init()
+    Await.result(
+      for {
+        // Start the JSON-RPC server
+        activeServer <- apiServer.init()
 
-      // Initialize the JSON-RPC client
-      activeClient <- client.init()
+        // Initialize the JSON-RPC client
+        activeClient <- client.init()
 
-      // Call the remote API function via the local proxy
-      result <- remoteApi.hello(1)
-      _ = println(result)
+        // Call the remote API function via the local proxy
+        result <- remoteApi.hello(1)
+        _ = println(result)
 
-      // Call the remote API function dynamically not using the API trait
-      result <- activeClient.call[String]("hello")("n" -> 1)
-      _ = println(result)
+        // Call the remote API function dynamically not using the API trait
+        result <- activeClient.call[String]("hello")("n" -> 1)
+        _ = println(result)
 
-      // Close the JSON-RPC client
-      _ <- activeClient.close()
+        // Close the JSON-RPC client
+        _ <- activeClient.close()
 
-      // Stop the JSON-RPC server
-      _ <- activeServer.close()
-    } yield (), Duration.Inf)
+        // Stop the JSON-RPC server
+        _ <- activeServer.close()
+      } yield (),
+      Duration.Inf,
+    )
   }
 }
-
