@@ -36,6 +36,8 @@
 
   <!-- Package-specific log level -->
   <logger name="automorph" level="\${LOG_LEVEL:-INFO}"/>
+  <logger name="io.netty" level="ERROR"/>
+  <logger name="io.undertow" level="ERROR"/>
   <logger name="org.xnio" level="ERROR"/>
 </configuration>
 
