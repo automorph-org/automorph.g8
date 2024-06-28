@@ -36,5 +36,6 @@
 
   <!-- Package-specific log level -->
   <logger name="automorph" level="\${LOG_LEVEL:-INFO}"/>
+  <logger name="org.xnio" level="ERROR"/>
 </configuration>
 
