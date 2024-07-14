@@ -1,6 +1,6 @@
 // Serve an API implementation and call it remotely using JSON-RPC over HTTP(S).
 //> using scala 3.4.2
-//> using dep org.automorph::automorph-default:0.2.5
+//> using dep org.automorph::automorph-default:0.3.0
 //> using dep ch.qos.logback:logback-classic:1.5.6
 package examples
 
@@ -51,7 +51,7 @@ private[examples] object Quickstart {
       result <- remoteApi.hello(1)
       _ = println(result)
 
-      // Call the remote API function dynamically not using the API trait
+      // Call the remote API function dynamically without using the API trait
       result <- client.call[String]("hello")("n" -> 1)
       _ = println(result)
 
