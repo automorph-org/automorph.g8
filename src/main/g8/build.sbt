@@ -5,7 +5,7 @@ name := "$name$"
 
 // Dependencies
 libraryDependencies ++= Seq(
-  "org.automorph" %% "automorph-default" % "0.2.6",
+  "org.automorph" %% "automorph-default" % "0.2.7",
   "ch.qos.logback" % "logback-classic" % "1.5.12",
 )
 
