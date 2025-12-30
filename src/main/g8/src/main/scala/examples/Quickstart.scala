@@ -1,10 +1,11 @@
 // Serve an API implementation and call it remotely using JSON-RPC over HTTP(S).
-//> using scala 3.6.2
-//> using dep org.automorph::automorph-default:0.2.7
+//> using scala 3.7.4
+//> using dep org.automorph::automorph-default:0.2.9
 //> using dep ch.qos.logback:logback-classic:1.5.12
 package examples
 
 import automorph.Default
+import io.circe.generic.auto.*
 import java.net.URI
 import scala.concurrent.ExecutionContext.Implicits.global
 import scala.concurrent.duration.Duration
@@ -14,7 +15,6 @@ private[examples] object Quickstart {
 
   @scala.annotation.nowarn
   def main(arguments: Array[String]): Unit = {
-    import io.circe.generic.auto.*
 
     // Define a remote API
     trait Api {
@@ -29,38 +29,38 @@ private[examples] object Quickstart {
     val service = new Service
 
     // Configure JSON-RPC HTTP & WebSocket server to listen on port 9000 for requests to '/api'
-    val inactiveServer = Default.rpcServer(9000, "/api")
+    val server = Default.rpcServer(9000, "/api")
 
-    // Register the API implementation to be available as a remote service
-    val apiServer = inactiveServer.service(service)
+    // Expose the server API implementation to be called remotely
+    val apiServer = server.bind(service)
 
     // Configure JSON-RPC HTTP client to send POST requests to 'http://localhost:9000/api'
-    val inactiveClient = Default.rpcClient(new URI("http://localhost:9000/api"))
+    val client = Default.rpcClient(new URI("http://localhost:9000/api"))
 
     // Create a type-safe local proxy for the remote API from the API trait
-    val remoteApi = inactiveClient.proxy[Api]
+    val remoteApi = client.bind[Api]
 
-    val run = for {
+    Await.ready(for {
       // Start the JSON-RPC server
-      server <- apiServer.init()
+      activeServer <- apiServer.init()
 
       // Initialize the JSON-RPC client
-      client <- inactiveClient.init()
+      activeClient <- client.init()
 
       // Call the remote API function via the local proxy
       result <- remoteApi.hello(1)
       _ = println(result)
 
       // Call the remote API function dynamically without using the API trait
-      result <- client.call[String]("hello")("n" -> 1)
+      result <- activeClient.call[String]("hello")("n" -> 1)
       _ = println(result)
 
       // Close the JSON-RPC client
-      _ <- client.close()
+      _ <- activeClient.close()
 
       // Stop the JSON-RPC server
-      _ <- server.close()
-    } yield ()
-    Await.result(run, Duration.Inf)
+      _ <- activeServer.close()
+    } yield (), Duration.Inf)
+    ()
   }
 }
